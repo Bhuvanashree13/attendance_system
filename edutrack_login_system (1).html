@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTrack Pro - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 1200px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .home-btn {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .home-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        .login-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .login-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .login-card.active {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-description {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .login-card.active .card-description {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .login-form {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-form.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .welcome-msg {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .dashboard-card h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dashboard-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .camera-container {
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .camera-placeholder {
+            width: 100%;
+            height: 300px;
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            margin: 0.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .report-section {
+            margin: 1.5rem 0;
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .report-table th,
+        .report-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .report-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .status-present {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .status-absent {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            margin-bottom: 1rem;
+            background: #6c757d;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                margin: 1rem;
+                width: calc(100% - 2rem);
+            }
+
+            .login-options {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .home-btn {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="home-btn">🏠 Home</a>
+
+    <div class="container">
+        <!-- Login Page -->
+        <div id="loginPage" class="login-page">
+            <div class="header">
+                <div class="logo">🎓 EduTrack Pro</div>
+                <div class="subtitle">Smart Facial Recognition Attendance System</div>
+            </div>
+
+            <div class="login-options">
+                <div class="login-card" onclick="showLogin('admin')">
+                    <div class="card-icon">👨‍💼</div>
+                    <div class="card-title">Administrator</div>
+                    <div class="card-description">Manage attendance, train models, and view comprehensive reports</div>
+                </div>
+                
+                <div class="login-card" onclick="showLogin('student')">
+                    <div class="card-icon">👨‍🎓</div>
+                    <div class="card-title">Student Portal</div>
+                    <div class="card-description">View your attendance records and academic progress</div>
+                </div>
+                
+                <div class="login-card" onclick="showLogin('parent')">
+                    <div class="card-icon">👨‍👩‍👧‍👦</div>
+                    <div class="card-title">Parent Portal</div>
+                    <div class="card-description">Monitor your child's attendance and academic performance</div>
+                </div>
+            </div>
+
+            <!-- Login Forms -->
+            <div id="adminLogin" class="login-form">
+                <h2 style="margin-bottom: 1rem; color: #333;">Administrator Login</h2>
+                <div class="form-group">
+                    <label>Admin ID</label>
+                    <input type="text" id="adminId" placeholder="Enter your admin ID">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="adminPassword" placeholder="Enter your password">
+                </div>
+                <button class="login-btn" onclick="login('admin')">Login as Administrator</button>
+                <button class="back-btn" onclick="showLoginOptions()" style="margin-top: 1rem;">Back to Options</button>
+            </div>
+
+            <div id="studentLogin" class="login-form">
+                <h2 style="margin-bottom: 1rem; color: #333;">Student Login</h2>
+                <div class="form-group">
+                    <label>Student ID</label>
+                    <input type="text" id="studentId" placeholder="Enter your student ID">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="studentPassword" placeholder="Enter your password">
+                </div>
+                <button class="login-btn" onclick="login('student')">Login as Student</button>
+                <button class="back-btn" onclick="showLoginOptions()" style="margin-top: 1rem;">Back to Options</button>
+            </div>
+
+            <div id="parentLogin" class="login-form">
+                <h2 style="margin-bottom: 1rem; color: #333;">Parent Login</h2>
+                <div class="form-group">
+                    <label>Parent ID</label>
+                    <input type="text" id="parentId" placeholder="Enter your parent ID">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="parentPassword" placeholder="Enter your password">
+                </div>
+                <button class="login-btn" onclick="login('parent')">Login as Parent</button>
+                <button class="back-btn" onclick="showLoginOptions()" style="margin-top: 1rem;">Back to Options</button>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="adminDashboard" class="dashboard">
+            <div class="dashboard-header">
+                <div class="welcome-msg">Welcome, Administrator</div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-card" onclick="openModal('captureModal')">
+                    <h3>📸 Capture Faces</h3>
+                    <p>Capture and register student faces for the recognition system</p>
+                </div>
+                
+                <div class="dashboard-card" onclick="openModal('trainModal')">
+                    <h3>🧠 Train Model</h3>
+                    <p>Train the facial recognition model with captured student data</p>
+                </div>
+                
+                <div class="dashboard-card" onclick="openModal('attendanceModal')">
+                    <h3>✅ Take Attendance</h3>
+                    <p>Run facial recognition to automatically mark student attendance</p>
+                </div>
+                
+                <div class="dashboard-card" onclick="openModal('reportsModal')">
+                    <h3>📊 Detailed Reports</h3>
+                    <p>View comprehensive attendance and behavioral analysis reports</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Dashboard -->
+        <div id="studentDashboard" class="dashboard">
+            <div class="dashboard-header">
+                <div class="welcome-msg">Welcome, <span id="studentName">Student</span></div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-card" onclick="openModal('studentReportModal')">
+                    <h3>📈 My Attendance Report</h3>
+                    <p>View your personal attendance records and statistics</p>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3>📅 Today's Status</h3>
+                    <p id="todayStatus">Present - Marked at 09:15 AM</p>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3>📊 Attendance Rate</h3>
+                    <p id="attendanceRate">85% (17/20 days present)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parent Dashboard -->
+        <div id="parentDashboard" class="dashboard">
+            <div class="dashboard-header">
+                <div class="welcome-msg">Welcome, <span id="parentName">Parent</span></div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-card" onclick="openModal('childReportModal')">
+                    <h3>👨‍🎓 Child's Report</h3>
+                    <p>View your child's attendance and academic progress</p>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3>🏠 Child: <span id="childName">Alex Johnson</span></h3>
+                    <p>Class: Grade 10-A | Roll No: 2024001</p>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3>📈 Monthly Summary</h3>
+                    <p id="monthlySummary">22/25 days present this month</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="captureModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📸 Capture Student Faces</h2>
+                <button class="close-btn" onclick="closeModal('captureModal')">&times;</button>
+            </div>
+            
+            <div class="form-group">
+                <label>Student Name</label>
+                <input type="text" id="captureStudentName" placeholder="Enter student name">
+            </div>
+            
+            <div class="form-group">
+                <label>Student ID</label>
+                <input type="text" id="captureStudentId" placeholder="Enter student ID">
+            </div>
+            
+            <div class="camera-container">
+                <div class="camera-placeholder">
+                    <div>📷 Camera Feed Will Appear Here</div>
+                </div>
+                <button class="btn btn-primary" onclick="startCapture()">Start Camera</button>
+                <button class="btn btn-success" onclick="captureImage()">Capture Face</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="trainModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🧠 Train Recognition Model</h2>
+                <button class="close-btn" onclick="closeModal('trainModal')">&times;</button>
+            </div>
+            
+            <div style="text-align: center; margin: 2rem 0;">
+                <p style="margin-bottom: 1rem;">Ready to train the facial recognition model with captured student data.</p>
+                <p style="margin-bottom: 2rem; color: #666;">Training may take several minutes depending on the number of students.</p>
+                
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <strong>Training Status:</strong> <span id="trainingStatus">Ready to train</span>
+                </div>
+                
+                <button class="btn btn-primary" onclick="startTraining()">Start Training</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="attendanceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✅ Take Attendance</h2>
+                <button class="close-btn" onclick="closeModal('attendanceModal')">&times;</button>
+            </div>
+            
+            <div class="camera-container">
+                <div class="camera-placeholder">
+                    <div>📷 Facial Recognition Camera</div>
+                </div>
+                <button class="btn btn-primary" onclick="startAttendance()">Start Attendance</button>
+                <button class="btn btn-info" onclick="viewTodayAttendance()">View Today's Log</button>
+            </div>
+            
+            <div id="attendanceResults" style="display: none; margin-top: 1rem;">
+                <h4>Today's Attendance</h4>
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Student ID</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceTableBody">
+                        <tr>
+                            <td>John Smith</td>
+                            <td>2024001</td>
+                            <td>09:15 AM</td>
+                            <td><span class="status-present">Present</span></td>
+                        </tr>
+                        <tr>
+                            <td>Emma Davis</td>
+                            <td>2024002</td>
+                            <td>09:18 AM</td>
+                            <td><span class="status-present">Present</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="reportsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📊 Detailed Reports</h2>
+                <button class="close-btn" onclick="closeModal('reportsModal')">&times;</button>
+            </div>
+            
+            <div class="report-section">
+                <h3>Attendance Summary</h3>
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Total Days</th>
+                            <th>Present</th>
+                            <th>Absent</th>
+                            <th>Attendance %</th>
+                            <th>Behavior Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>John Smith</td>
+                            <td>25</td>
+                            <td>23</td>
+                            <td>2</td>
+                            <td>92%</td>
+                            <td>8.5/10</td>
+                        </tr>
+                        <tr>
+                            <td>Emma Davis</td>
+                            <td>25</td>
+                            <td>21</td>
+                            <td>4</td>
+                            <td>84%</td>
+                            <td>7.8/10</td>
+                        </tr>
+                        <tr>
+                            <td>Alex Johnson</td>
+                            <td>25</td>
+                            <td>19</td>
+                            <td>6</td>
+                            <td>76%</td>
+                            <td>7.2/10</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="report-section">
+                <h3>Behavioral Analysis</h3>
+                <p>📈 <strong>Punctuality:</strong> 85% of students arrive on time</p>
+                <p>📊 <strong>Class Engagement:</strong> High participation rate observed</p>
+                <p>🎯 <strong>Improvement Areas:</strong> Focus on reducing late arrivals</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="studentReportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📈 My Attendance Report</h2>
+                <button class="close-btn" onclick="closeModal('studentReportModal')">&times;</button>
+            </div>
+            
+            <div class="report-section">
+                <h3>Personal Statistics</h3>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <p><strong>Overall Attendance:</strong> 85% (17/20 days)</p>
+                    <p><strong>This Month:</strong> 22/25 days present</p>
+                    <p><strong>Punctuality Score:</strong> 90%</p>
+                </div>
+                
+                <h4>Recent Attendance</h4>
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2024-08-29</td>
+                            <td><span class="status-present">Present</span></td>
+                            <td>09:15 AM</td>
+                        </tr>
+                        <tr>
+                            <td>2024-08-28</td>
+                            <td><span class="status-present">Present</span></td>
+                            <td>09:12 AM</td>
+                        </tr>
+                        <tr>
+                            <td>2024-08-27</td>
+                            <td><span class="status-absent">Absent</span></td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="childReportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>👨‍🎓 Child's Progress Report</h2>
+                <button class="close-btn" onclick="closeModal('childReportModal')">&times;</button>
+            </div>
+            
+            <div class="report-section">
+                <h3>Alex Johnson - Grade 10-A</h3>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <p><strong>Overall Attendance:</strong> 88% (22/25 days this month)</p>
+                    <p><strong>Punctuality:</strong> Excellent - Usually arrives 5-10 minutes early</p>
+                    <p><strong>Behavior Score:</strong> 8.5/10 - Well-behaved and engaged</p>
+                </div>
+                
+                <h4>Weekly Summary</h4>
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Week</th>
+                            <th>Days Present</th>
+                            <th>Days Absent</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Week 4</td>
+                            <td>4</td>
+                            <td>1</td>
+                            <td>Sick leave on Friday</td>
+                        </tr>
+                        <tr>
+                            <td>Week 3</td>
+                            <td>5</td>
+                            <td>0</td>
+                            <td>Perfect attendance</td>
+                        </tr>
+                        <tr>
+                            <td>Week 2</td>
+                            <td>5</td>
+                            <td>0</td>
+                            <td>Perfect attendance</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let currentUserType = null;
+
+        // Check for preferred user type from home page
+        window.addEventListener('load', () => {
+            const preferredType = sessionStorage.getItem('preferredUserType');
+            if (preferredType) {
+                showLogin(preferredType);
+                sessionStorage.removeItem('preferredUserType');
+            }
+        });
+
+        function showLogin(type) {
+            // Hide all login forms and reset cards
+            document.querySelectorAll('.login-form').forEach(form => form.classList.remove('active'));
+            document.querySelectorAll('.login-card').forEach(card => card.classList.remove('active'));
+            
+            // Show selected login form and highlight card
+            document.getElementById(type + 'Login').classList.add('active');
+            document.querySelector(`[onclick="showLogin('${type}')"]`).classList.add('active');
+        }
+
+        function showLoginOptions() {
+            document.querySelectorAll('.login-form').forEach(form => form.classList.remove('active'));
+            document.querySelectorAll('.login-card').forEach(card => card.classList.remove('active'));
+        }
+
+        function login(type) {
+            let userId, password;
+            
+            switch(type) {
+                case 'admin':
+                    userId = document.getElementById('adminId').value;
+                    password = document.getElementById('adminPassword').value;
+                    break;
+                case 'student':
+                    userId = document.getElementById('studentId').value;
+                    password = document.getElementById('studentPassword').value;
+                    break;
+                case 'parent':
+                    userId = document.getElementById('parentId').value;
+                    password = document.getElementById('parentPassword').value;
+                    break;
+            }
+            
+            if (!userId || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Simulate authentication
+            currentUser = userId;
+            currentUserType = type;
+            
+            // Hide login page and show appropriate dashboard
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById(type + 'Dashboard').classList.add('active');
+            
+            // Update user-specific information
+            if (type === 'student') {
+                document.getElementById('studentName').textContent = getStudentName(userId);
+            } else if (type === 'parent') {
+                document.getElementById('parentName').textContent = getParentName(userId);
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            currentUserType = null;
+            
+            // Hide all dashboards
+            document.querySelectorAll('.dashboard').forEach(dashboard => dashboard.classList.remove('active'));
+            
+            // Show login page
+            document.getElementById('loginPage').style.display = 'block';
+            showLoginOptions();
+            
+            // Clear form inputs
+            document.querySelectorAll('input').forEach(input => input.value = '');
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function startCapture() {
+            const placeholder = document.querySelector('#captureModal .camera-placeholder');
+            placeholder.innerHTML = '<div>📷 Camera Started - Ready to capture faces</div>';
+            placeholder.style.background = 'linear-gradient(45deg, #e8f5e8, #f0f8f0)';
+            alert('Camera started! Position the student in front of the camera and click "Capture Face".');
+        }
+
+        function captureImage() {
+            const studentName = document.getElementById('captureStudentName').value;
+            const studentId = document.getElementById('captureStudentId').value;
+            
+            if (!studentName || !studentId) {
+                alert('Please enter student name and ID first.');
+                return;
+            }
+            
+            // Simulate face capture
+            alert(`Face captured successfully for ${studentName} (ID: ${studentId})!\nFace data has been saved to the system.`);
+            
+            // Clear form
+            document.getElementById('captureStudentName').value = '';
+            document.getElementById('captureStudentId').value = '';
+            
+            // Reset camera placeholder
+            const placeholder = document.querySelector('#captureModal .camera-placeholder');
+            placeholder.innerHTML = '<div>📷 Camera Feed Will Appear Here</div>';
+            placeholder.style.background = '#f8f9fa';
+        }
+
+        function startTraining() {
+            const statusElement = document.getElementById('trainingStatus');
+            const button = event.target;
+            
+            button.disabled = true;
+            button.textContent = 'Training in Progress...';
+            statusElement.textContent = 'Training model...';
+            statusElement.style.color = '#ff6b35';
+            
+            // Simulate training process
+            setTimeout(() => {
+                statusElement.textContent = 'Training completed successfully!';
+                statusElement.style.color = '#28a745';
+                button.disabled = false;
+                button.textContent = 'Start Training';
+                alert('Model training completed successfully!\nThe system is now ready for facial recognition attendance.');
+            }, 3000);
+        }
+
+        function startAttendance() {
+            const placeholder = document.querySelector('#attendanceModal .camera-placeholder');
+            placeholder.innerHTML = '<div>🔍 Facial Recognition Active - Scanning for faces...</div>';
+            placeholder.style.background = 'linear-gradient(45deg, #e3f2fd, #f0f7ff)';
+            
+            // Simulate recognition process
+            setTimeout(() => {
+                alert('Students recognized and attendance marked!\nCheck "View Today\'s Log" to see results.');
+                placeholder.innerHTML = '<div>✅ Attendance session completed</div>';
+                placeholder.style.background = 'linear-gradient(45deg, #e8f5e8, #f0f8f0)';
+            }, 2000);
+        }
+
+        function viewTodayAttendance() {
+            document.getElementById('attendanceResults').style.display = 'block';
+        }
+
+        function getStudentName(studentId) {
+            const students = {
+                '2024001': 'John Smith',
+                '2024002': 'Emma Davis',
+                '2024003': 'Alex Johnson'
+            };
+            return students[studentId] || 'Student';
+        }
+
+        function getParentName(parentId) {
+            const parents = {
+                'P001': 'Mr. Johnson',
+                'P002': 'Mrs. Smith',
+                'P003': 'Mr. Davis'
+            };
+            return parents[parentId] || 'Parent';
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+
+        // Simulate real-time updates
+        setInterval(() => {
+            if (currentUserType === 'student') {
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                document.getElementById('todayStatus').textContent = `Present - Last updated at ${timeStr}`;
+            }
+        }, 30000);
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal.active').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
